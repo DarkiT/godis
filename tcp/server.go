@@ -6,7 +6,6 @@ package tcp
 
 import (
 	"context"
-	"fmt"
 	"net"
 	"os"
 	"os/signal"
@@ -15,8 +14,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/hdt3213/godis/interface/tcp"
-	"github.com/hdt3213/godis/lib/logger"
+	"github.com/darkit/godis/interface/tcp"
+	"github.com/darkit/godis/lib/logger"
 )
 
 // Config stores tcp server properties
@@ -45,8 +44,8 @@ func ListenAndServeWithSignal(cfg *Config, handler tcp.Handler) error {
 	if err != nil {
 		return err
 	}
-	//cfg.Address = listener.Addr().String()
-	logger.Info(fmt.Sprintf("bind: %s, start listening...", cfg.Address))
+	// cfg.Address = listener.Addr().String()
+	logger.Infof("bind: %s, start listening...", cfg.Address)
 	ListenAndServe(listener, handler, closeChan)
 	return nil
 }
@@ -61,7 +60,7 @@ func ListenAndServe(listener net.Listener, handler tcp.Handler, closeChan <-chan
 		case <-closeChan:
 			logger.Info("get exit signal")
 		case er := <-errCh:
-			logger.Info(fmt.Sprintf("accept error: %s", er.Error()))
+			logger.Infof("accept error: %s", er.Error())
 		}
 		logger.Info("shutting down...")
 		_ = listener.Close() // listener.Accept() will return err immediately

@@ -165,5 +165,4 @@ func TestPool_CreateErr(t *testing.T) {
 		t.Error("get err")
 		return
 	}
-
 }

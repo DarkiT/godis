@@ -1,11 +1,12 @@
 package connection
 
 import (
-	"github.com/hdt3213/godis/lib/logger"
-	"github.com/hdt3213/godis/lib/sync/wait"
 	"net"
 	"sync"
 	"time"
+
+	"github.com/darkit/godis/lib/logger"
+	"github.com/darkit/godis/lib/sync/wait"
 )
 
 const (

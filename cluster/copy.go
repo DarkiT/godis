@@ -1,16 +1,19 @@
 package cluster
 
 import (
-	"github.com/hdt3213/godis/interface/redis"
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/protocol"
 	"strconv"
 	"strings"
+
+	"github.com/darkit/godis/interface/redis"
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/protocol"
 )
 
-const copyToAnotherDBErr = "ERR Copying to another database is not allowed in cluster mode"
-const noReplace = "NoReplace"
-const useReplace = "UseReplace"
+const (
+	copyToAnotherDBErr = "ERR Copying to another database is not allowed in cluster mode"
+	noReplace          = "NoReplace"
+	useReplace         = "UseReplace"
+)
 
 // Copy copies the value stored at the source key to the destination key.
 // the origin and the destination must within the same node.

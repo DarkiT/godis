@@ -1,8 +1,9 @@
 package cluster
 
 import (
-	"github.com/hdt3213/godis/redis/protocol"
 	"sync"
+
+	"github.com/darkit/godis/redis/protocol"
 )
 
 // fixedTopology is a fixed cluster topology, used for test

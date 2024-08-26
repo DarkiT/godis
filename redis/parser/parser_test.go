@@ -2,11 +2,12 @@ package parser
 
 import (
 	"bytes"
-	"github.com/hdt3213/godis/interface/redis"
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/protocol"
 	"io"
 	"testing"
+
+	"github.com/darkit/godis/interface/redis"
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/protocol"
 )
 
 func TestParseStream(t *testing.T) {

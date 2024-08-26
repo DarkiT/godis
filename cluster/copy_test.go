@@ -1,10 +1,11 @@
 package cluster
 
 import (
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/connection"
-	"github.com/hdt3213/godis/redis/protocol/asserts"
 	"testing"
+
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/connection"
+	"github.com/darkit/godis/redis/protocol/asserts"
 )
 
 func TestCopy(t *testing.T) {

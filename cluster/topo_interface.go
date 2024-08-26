@@ -1,10 +1,11 @@
 package cluster
 
 import (
-	"github.com/hdt3213/godis/redis/protocol"
 	"hash/crc32"
 	"strings"
 	"time"
+
+	"github.com/darkit/godis/redis/protocol"
 )
 
 // Slot represents a hash slot,  used in cluster internal messages

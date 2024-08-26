@@ -2,13 +2,14 @@ package cluster
 
 import (
 	"fmt"
-	"github.com/hdt3213/godis/database"
-	"github.com/hdt3213/godis/lib/logger"
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/connection"
-	"github.com/hdt3213/godis/redis/protocol"
 	"strconv"
 	"time"
+
+	"github.com/darkit/godis/database"
+	"github.com/darkit/godis/lib/logger"
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/connection"
+	"github.com/darkit/godis/redis/protocol"
 )
 
 func (cluster *Cluster) startAsSeed(listenAddr string) protocol.ErrorReply {
@@ -116,7 +117,7 @@ func (cluster *Cluster) reBalance() {
 				logger.Info("start import slot ", slot.ID)
 				err := cluster.importSlot(slot)
 				if err != nil {
-					logger.Error(fmt.Sprintf("import slot %d error: %v", slot.ID, err))
+					logger.Errorf("import slot %d error: %v", slot.ID, err)
 					// delete all imported keys in slot
 					cluster.cleanDroppedSlot(slot.ID)
 					// todo: recover route

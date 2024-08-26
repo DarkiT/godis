@@ -1,16 +1,19 @@
 package cluster
 
 import (
-	"github.com/hdt3213/godis/database"
-	"github.com/hdt3213/godis/interface/redis"
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/connection"
-	"github.com/hdt3213/godis/redis/protocol"
 	"strconv"
+
+	"github.com/darkit/godis/database"
+	"github.com/darkit/godis/interface/redis"
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/connection"
+	"github.com/darkit/godis/redis/protocol"
 )
 
-const relayMulti = "multi_"
-const innerWatch = "watch_"
+const (
+	relayMulti = "multi_"
+	innerWatch = "watch_"
+)
 
 var relayMultiBytes = []byte(relayMulti)
 
@@ -70,7 +73,7 @@ func execMultiOnOtherNode(cluster *Cluster, conn redis.Connection, peer string, 
 		relayMultiBytes,
 	}
 	// watching commands
-	var watchingCmdLine = utils.ToCmdLine(innerWatch)
+	watchingCmdLine := utils.ToCmdLine(innerWatch)
 	for key, ver := range watching {
 		verStr := strconv.FormatUint(uint64(ver), 10)
 		watchingCmdLine = append(watchingCmdLine, []byte(key), []byte(verStr))

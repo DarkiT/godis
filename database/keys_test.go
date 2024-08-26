@@ -1,13 +1,14 @@
 package database
 
 import (
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/connection"
-	"github.com/hdt3213/godis/redis/protocol"
-	"github.com/hdt3213/godis/redis/protocol/asserts"
 	"strconv"
 	"testing"
 	"time"
+
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/connection"
+	"github.com/darkit/godis/redis/protocol"
+	"github.com/darkit/godis/redis/protocol/asserts"
 )
 
 func TestExists(t *testing.T) {
@@ -151,7 +152,6 @@ func TestExpire(t *testing.T) {
 	time.Sleep(2 * time.Second)
 	result := testDB.Exec(nil, utils.ToCmdLine("TTL", key))
 	asserts.AssertIntReply(t, result, -2)
-
 }
 
 func TestExpireAt(t *testing.T) {
@@ -205,7 +205,7 @@ func TestExpiredTime(t *testing.T) {
 
 	estimateExpireTimestamp := time.Now().Add(2 * time.Second).Unix() // actually expiration may be >= estimateExpireTimestamp
 	testDB.Exec(nil, utils.ToCmdLine("EXPIRE", key, "2"))
-	//tt := time.Now()
+	// tt := time.Now()
 	result = testDB.Exec(nil, utils.ToCmdLine("ttl", key))
 	intResult, ok := result.(*protocol.IntReply)
 	if !ok {
@@ -247,7 +247,6 @@ func TestExpiredTime(t *testing.T) {
 	result = testDB.Exec(nil, utils.ToCmdLine("PEXPIRETIME", key))
 	asserts.AssertIntReply(t, result, -2)
 	intResult, ok = result.(*protocol.IntReply)
-
 }
 
 func TestKeys(t *testing.T) {

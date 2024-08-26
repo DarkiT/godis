@@ -5,8 +5,10 @@ import (
 	"encoding/binary"
 )
 
-var bits = []uint8{128, 64, 32, 16, 8, 4, 2, 1}
-var enc = base32.NewEncoding("0123456789bcdefghjkmnpqrstuvwxyz").WithPadding(base32.NoPadding)
+var (
+	bits = []uint8{128, 64, 32, 16, 8, 4, 2, 1}
+	enc  = base32.NewEncoding("0123456789bcdefghjkmnpqrstuvwxyz").WithPadding(base32.NoPadding)
+)
 
 const defaultBitSize = 64 // 32 bits for latitude, another 32 bits for longitude
 

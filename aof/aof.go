@@ -11,14 +11,14 @@ import (
 
 	rdb "github.com/hdt3213/rdb/core"
 
-	"github.com/hdt3213/godis/config"
+	"github.com/darkit/godis/config"
 
-	"github.com/hdt3213/godis/interface/database"
-	"github.com/hdt3213/godis/lib/logger"
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/connection"
-	"github.com/hdt3213/godis/redis/parser"
-	"github.com/hdt3213/godis/redis/protocol"
+	"github.com/darkit/godis/interface/database"
+	"github.com/darkit/godis/lib/logger"
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/connection"
+	"github.com/darkit/godis/redis/parser"
+	"github.com/darkit/godis/redis/protocol"
 )
 
 // CmdLine is alias for [][]byte, represents a command line
@@ -86,7 +86,7 @@ func NewPersister(db database.DBEngine, filename string, load bool, fsync string
 	if load {
 		persister.LoadAof(0)
 	}
-	aofFile, err := os.OpenFile(persister.aofFilename, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0600)
+	aofFile, err := os.OpenFile(persister.aofFilename, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0o600)
 	if err != nil {
 		return nil, err
 	}
@@ -135,7 +135,6 @@ func (persister *Persister) SaveCmdLine(dbIndex int, cmdLine CmdLine) {
 		cmdLine: cmdLine,
 		dbIndex: dbIndex,
 	}
-
 }
 
 // listenCmd listen aof channel and write into file
@@ -158,7 +157,7 @@ func (persister *Persister) writeAof(p *payload) {
 		data := protocol.MakeMultiBulkReply(selectCmd).ToBytes()
 		_, err := persister.aofFile.Write(data)
 		if err != nil {
-			logger.Warn(err)
+			logger.Warn(err.Error())
 			return // skip this command
 		}
 		persister.currentDB = p.dbIndex
@@ -168,7 +167,7 @@ func (persister *Persister) writeAof(p *payload) {
 	persister.buffer = append(persister.buffer, p.cmdLine)
 	_, err := persister.aofFile.Write(data)
 	if err != nil {
-		logger.Warn(err)
+		logger.Warn(err.Error())
 	}
 	for listener := range persister.listeners {
 		listener.Callback(persister.buffer)
@@ -193,7 +192,7 @@ func (persister *Persister) LoadAof(maxBytes int) {
 		if _, ok := err.(*os.PathError); ok {
 			return
 		}
-		logger.Warn(err)
+		logger.Warn(err.Error())
 		return
 	}
 	defer file.Close()
@@ -264,7 +263,7 @@ func (persister *Persister) Close() {
 		<-persister.aofFinished // wait for aof finished
 		err := persister.aofFile.Close()
 		if err != nil {
-			logger.Warn(err)
+			logger.Warn(err.Error())
 		}
 	}
 	persister.cancel()

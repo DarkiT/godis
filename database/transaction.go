@@ -1,9 +1,10 @@
 package database
 
 import (
-	"github.com/hdt3213/godis/interface/redis"
-	"github.com/hdt3213/godis/redis/protocol"
 	"strings"
+
+	"github.com/darkit/godis/interface/redis"
+	"github.com/darkit/godis/redis/protocol"
 )
 
 // Watch set watching keys
@@ -121,7 +122,7 @@ func (db *DB) ExecMulti(conn redis.Connection, watching map[string]uint32, cmdLi
 		}
 		results = append(results, result)
 	}
-	if !aborted { //success
+	if !aborted { // success
 		db.addVersion(writeKeys...)
 		return protocol.MakeMultiRawReply(results)
 	}

@@ -2,16 +2,19 @@ package database
 
 import (
 	"fmt"
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/protocol"
-	"github.com/hdt3213/godis/redis/protocol/asserts"
 	"math"
 	"strconv"
 	"testing"
+
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/protocol"
+	"github.com/darkit/godis/redis/protocol/asserts"
 )
 
-var testDB = makeTestDB()
-var testServer = NewStandaloneServer()
+var (
+	testDB     = makeTestDB()
+	testServer = NewStandaloneServer()
+)
 
 func TestSet2(t *testing.T) {
 	key := utils.RandString(10)

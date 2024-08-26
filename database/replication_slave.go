@@ -5,7 +5,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"net"
 	"os"
 	"strconv"
@@ -14,15 +13,15 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/hdt3213/godis/aof"
-	"github.com/hdt3213/godis/config"
-	"github.com/hdt3213/godis/interface/redis"
-	"github.com/hdt3213/godis/lib/logger"
+	"github.com/darkit/godis/aof"
+	"github.com/darkit/godis/config"
+	"github.com/darkit/godis/interface/redis"
+	"github.com/darkit/godis/lib/logger"
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/connection"
+	"github.com/darkit/godis/redis/parser"
+	"github.com/darkit/godis/redis/protocol"
 	rdb "github.com/hdt3213/rdb/parser"
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/connection"
-	"github.com/hdt3213/godis/redis/parser"
-	"github.com/hdt3213/godis/redis/protocol"
 )
 
 const (
@@ -118,9 +117,7 @@ func (repl *slaveStatus) close() error {
 // setupMaster connects to master and starts full sync
 func (server *Server) setupMaster() {
 	defer func() {
-		if err := recover(); err != nil {
-			logger.Error(err)
-		}
+		_ = recover()
 	}()
 	var configVersion int32
 	ctx, cancel := context.WithCancel(context.Background())
@@ -132,7 +129,7 @@ func (server *Server) setupMaster() {
 	isFullReSync, err := server.connectWithMaster(configVersion)
 	if err != nil {
 		// connect failed, abort master
-		logger.Error(err)
+		logger.Error(err.Error())
 		server.slaveOfNone()
 		return
 	}
@@ -140,7 +137,7 @@ func (server *Server) setupMaster() {
 		err = server.loadMasterRDB(configVersion)
 		if err != nil {
 			// load failed, abort master
-			logger.Error(err)
+			logger.Error(err.Error())
 			server.slaveOfNone()
 			return
 		}
@@ -148,7 +145,7 @@ func (server *Server) setupMaster() {
 	err = server.receiveAOF(ctx, configVersion)
 	if err != nil {
 		// full sync failed, abort
-		logger.Error(err)
+		logger.Error(err.Error())
 		return
 	}
 }
@@ -303,7 +300,7 @@ func (server *Server) psyncHandshake() (bool, error) {
 	if err != nil {
 		return false, errors.New("get illegal repl offset: " + headers[2])
 	}
-	logger.Info(fmt.Sprintf("repl id: %s, current offset: %d", server.slaveStatus.replId, server.slaveStatus.replOffset))
+	logger.Infof("repl id: %s, current offset: %d", server.slaveStatus.replId, server.slaveStatus.replOffset)
 	return isFullReSync, nil
 }
 
@@ -313,7 +310,7 @@ func makeRdbLoader(upgradeAof bool) (*Server, string, error) {
 		return rdbLoader, "", nil
 	}
 	// make aof handler to generate new aof file during loading rdb
-	newAofFile, err := ioutil.TempFile("", "*.aof")
+	newAofFile, err := os.CreateTemp("", "*.aof")
 	if err != nil {
 		return nil, "", fmt.Errorf("create temp rdb failed: %v", err)
 	}
@@ -337,7 +334,7 @@ func (server *Server) loadMasterRDB(configVersion int32) error {
 		return errors.New("illegal payload header: " + string(rdbPayload.Data.ToBytes()))
 	}
 
-	logger.Info(fmt.Sprintf("receive %d bytes of rdb from master", len(rdbReply.Arg)))
+	logger.Infof("receive %d bytes of rdb from master", len(rdbReply.Arg))
 	rdbDec := rdb.NewDecoder(bytes.NewReader(rdbReply.Arg))
 
 	rdbLoader, newAofFilename, err := makeRdbLoader(config.Properties.AppendOnly)
@@ -404,8 +401,8 @@ func (server *Server) receiveAOF(ctx context.Context, configVersion int32) error
 			n := len(cmdLine.ToBytes()) // todo: directly get size from socket
 			server.slaveStatus.replOffset += int64(n)
 			server.slaveStatus.lastRecvTime = time.Now()
-			logger.Info(fmt.Sprintf("receive %d bytes from master, current offset %d, %s",
-				n, server.slaveStatus.replOffset, strconv.Quote(string(cmdLine.ToBytes()))))
+			logger.Infof("receive %d bytes from master, current offset %d, %s",
+				n, server.slaveStatus.replOffset, strconv.Quote(string(cmdLine.ToBytes())))
 			server.slaveStatus.mutex.Unlock()
 		case <-ctx.Done():
 			_ = conn.Close()

@@ -1,13 +1,14 @@
 package database
 
 import (
-	"github.com/hdt3213/godis/config"
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/connection"
-	"github.com/hdt3213/godis/redis/protocol/asserts"
 	"math/rand"
 	"testing"
 	"time"
+
+	"github.com/darkit/godis/config"
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/connection"
+	"github.com/darkit/godis/redis/protocol/asserts"
 )
 
 func TestPing(t *testing.T) {
@@ -39,7 +40,6 @@ func TestAuth(t *testing.T) {
 	asserts.AssertErrReply(t, ret, "NOAUTH Authentication required")
 	ret = testServer.Exec(c, utils.ToCmdLine("AUTH", passwd))
 	asserts.AssertStatusReply(t, ret, "OK")
-
 }
 
 func TestInfo(t *testing.T) {

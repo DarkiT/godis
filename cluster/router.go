@@ -1,8 +1,9 @@
 package cluster
 
 import (
-	"github.com/hdt3213/godis/interface/redis"
 	"strings"
+
+	"github.com/darkit/godis/interface/redis"
 )
 
 // CmdLine is alias for [][]byte, represents a command line
@@ -30,7 +31,7 @@ func defaultFunc(cluster *Cluster, c redis.Connection, args [][]byte) redis.Repl
 			return err
 		}
 		// to self db
-		//return cluster.db.Exec(c, cmdLine)
+		// return cluster.db.Exec(c, cmdLine)
 		return cluster.db.Exec(c, args)
 	}
 	return cluster.relay(peer.ID, c, args)
@@ -155,7 +156,6 @@ func init() {
 	for _, name := range defaultCmds {
 		registerDefaultCmd(name)
 	}
-
 }
 
 // genPenetratingExecutor generates an executor that can reach directly to the database layer

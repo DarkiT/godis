@@ -1,9 +1,10 @@
 package list
 
 import (
-	"github.com/hdt3213/godis/lib/utils"
 	"strconv"
 	"testing"
+
+	"github.com/darkit/godis/lib/utils"
 )
 
 func TestQuickList_Add(t *testing.T) {
@@ -101,7 +102,6 @@ func TestQuickList_RemoveLast(t *testing.T) {
 			t.Errorf("wrong len: %d", list.Len())
 		}
 	}
-
 }
 
 func TestQuickListRemoveVal(t *testing.T) {

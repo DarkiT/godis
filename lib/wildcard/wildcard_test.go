@@ -105,7 +105,7 @@ func TestWildCard(t *testing.T) {
 		t.Error("expect false actually true")
 	}
 
-	//test [^]
+	// test [^]
 	p, err = CompilePattern("h[^ab]llo")
 	if err != nil {
 		t.Error(err)

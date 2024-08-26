@@ -1,9 +1,10 @@
 package database
 
 import (
-	"github.com/hdt3213/godis/interface/redis"
-	"github.com/hdt3213/godis/redis/protocol"
 	"strings"
+
+	"github.com/darkit/godis/interface/redis"
+	"github.com/darkit/godis/redis/protocol"
 )
 
 const (
@@ -112,7 +113,7 @@ func init() {
 		attachCommandExtra([]string{redisFlagLoading, redisFlagFast}, 0, 0, 0)
 	registerSpecialCommand("ReplConf", -1, 0).
 		attachCommandExtra([]string{redisFlagAdmin, redisFlagNoScript, redisFlagLoading, redisFlagStale}, 0, 0, 0)
-	//attachCommandExtra("ReplConf", 3, []string{redisFlagReadonly, redisFlagAdmin, redisFlagNoScript}, 0, 0, 0, nil)
+	// attachCommandExtra("ReplConf", 3, []string{redisFlagReadonly, redisFlagAdmin, redisFlagNoScript}, 0, 0, 0, nil)
 
 	// transaction command
 	registerSpecialCommand("Multi", 1, 0).

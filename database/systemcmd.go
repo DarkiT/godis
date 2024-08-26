@@ -2,14 +2,15 @@ package database
 
 import (
 	"fmt"
-	"github.com/hdt3213/godis/config"
-	"github.com/hdt3213/godis/interface/redis"
-	"github.com/hdt3213/godis/redis/protocol"
-	"github.com/hdt3213/godis/tcp"
 	"os"
 	"runtime"
 	"strings"
 	"time"
+
+	"github.com/darkit/godis/config"
+	"github.com/darkit/godis/interface/redis"
+	"github.com/darkit/godis/redis/protocol"
+	"github.com/darkit/godis/tcp"
 )
 
 // Ping the server
@@ -102,21 +103,21 @@ func GenGodisInfoString(section string, db *Server) []byte {
 			//"lru_clock:%d\r\n"+
 			"config_file:%s\r\n",
 			godisVersion,
-			//TODO,
-			//TODO,
-			//TODO,
+			// TODO,
+			// TODO,
+			// TODO,
 			getGodisRunningMode(),
 			runtime.GOOS, runtime.GOARCH,
 			32<<(^uint(0)>>63),
-			//TODO,
+			// TODO,
 			runtime.Version(),
 			os.Getpid(),
 			config.Properties.RunID,
 			config.Properties.Port,
 			startUpTimeFromNow,
 			startUpTimeFromNow/time.Duration(3600*24),
-			//TODO,
-			//TODO,
+			// TODO,
+			// TODO,
 			config.Properties.CfPath)
 		return []byte(s)
 	case "client":
@@ -126,9 +127,9 @@ func GenGodisInfoString(section string, db *Server) []byte {
 			//"client_recent_max_output_buffer:%d\r\n"+
 			//"blocked_clients:%d\n",
 			tcp.ClientCounter,
-			//TODO,
-			//TODO,
-			//TODO,
+			// TODO,
+			// TODO,
+			// TODO,
 		)
 		return []byte(s)
 	case "cluster":

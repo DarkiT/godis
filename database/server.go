@@ -9,14 +9,14 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/hdt3213/godis/aof"
-	"github.com/hdt3213/godis/config"
-	"github.com/hdt3213/godis/interface/database"
-	"github.com/hdt3213/godis/interface/redis"
-	"github.com/hdt3213/godis/lib/logger"
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/pubsub"
-	"github.com/hdt3213/godis/redis/protocol"
+	"github.com/darkit/godis/aof"
+	"github.com/darkit/godis/config"
+	"github.com/darkit/godis/interface/database"
+	"github.com/darkit/godis/interface/redis"
+	"github.com/darkit/godis/lib/logger"
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/pubsub"
+	"github.com/darkit/godis/redis/protocol"
 )
 
 var godisVersion = "1.2.8" // do not modify
@@ -81,7 +81,7 @@ func NewStandaloneServer() *Server {
 		// load rdb
 		err := server.loadRdbFile()
 		if err != nil {
-			logger.Error(err)
+			logger.Error(err.Error())
 		}
 	}
 	server.slaveStatus = initReplSlaveStatus()
@@ -96,7 +96,7 @@ func NewStandaloneServer() *Server {
 func (server *Server) Exec(c redis.Connection, cmdLine [][]byte) (result redis.Reply) {
 	defer func() {
 		if err := recover(); err != nil {
-			logger.Warn(fmt.Sprintf("error occurs: %v\n%s", err, string(debug.Stack())))
+			logger.Warnf("error occurs: %v\n%s", err, string(debug.Stack()))
 			result = &protocol.UnknownErrReply{}
 		}
 	}()
@@ -378,9 +378,7 @@ func BGSaveRDB(db *Server, args [][]byte) redis.Reply {
 	}
 	go func() {
 		defer func() {
-			if err := recover(); err != nil {
-				logger.Error(err)
-			}
+			_ = recover()
 		}()
 		rdbFilename := config.Properties.RDBFilename
 		if rdbFilename == "" {
@@ -388,7 +386,7 @@ func BGSaveRDB(db *Server, args [][]byte) redis.Reply {
 		}
 		err := db.persister.GenerateRDB(rdbFilename)
 		if err != nil {
-			logger.Error(err)
+			logger.Error(err.Error())
 		}
 	}()
 	return protocol.MakeStatusReply("Background saving started")
@@ -436,7 +434,6 @@ func (server *Server) SetKeyInsertedCallback(cb database.KeyEventCallback) {
 		db := server.mustSelectDB(i)
 		db.insertCallback = cb
 	}
-
 }
 
 func (server *Server) SetKeyDeletedCallback(cb database.KeyEventCallback) {

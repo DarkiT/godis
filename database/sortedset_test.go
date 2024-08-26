@@ -1,12 +1,13 @@
 package database
 
 import (
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/protocol"
-	"github.com/hdt3213/godis/redis/protocol/asserts"
 	"math/rand"
 	"strconv"
 	"testing"
+
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/protocol"
+	"github.com/darkit/godis/redis/protocol/asserts"
 )
 
 func TestZAdd(t *testing.T) {
@@ -86,7 +87,7 @@ func TestZRange(t *testing.T) {
 	scores := make([]int, size)
 	setArgs := []string{key}
 	for i := 0; i < size; i++ {
-		members[i] = strconv.Itoa(i) //utils.RandString(10)
+		members[i] = strconv.Itoa(i) // utils.RandString(10)
 		scores[i] = i
 		setArgs = append(setArgs, strconv.FormatInt(int64(scores[i]), 10), members[i])
 	}
@@ -560,7 +561,6 @@ func TestZRangeByLex(t *testing.T) {
 	// case30
 	result31 := testDB.Exec(nil, utils.ToCmdLine("ZRangeByLex", key, "-", "+", "limit", "2", "2"))
 	asserts.AssertMultiBulkReply(t, result31, []string{"c", "d"})
-
 }
 
 func TestZRemRangeByLex(t *testing.T) {

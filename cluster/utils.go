@@ -1,7 +1,7 @@
 package cluster
 
 import (
-	"github.com/hdt3213/godis/interface/redis"
+	"github.com/darkit/godis/interface/redis"
 )
 
 func ping(cluster *Cluster, c redis.Connection, cmdLine CmdLine) redis.Reply {

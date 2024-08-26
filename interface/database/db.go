@@ -3,7 +3,7 @@ package database
 import (
 	"time"
 
-	"github.com/hdt3213/godis/interface/redis"
+	"github.com/darkit/godis/interface/redis"
 	"github.com/hdt3213/rdb/core"
 )
 

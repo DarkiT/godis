@@ -1,10 +1,10 @@
 package connection
 
 import (
-	"fmt"
-	"github.com/hdt3213/godis/lib/logger"
 	"io"
 	"sync"
+
+	"github.com/darkit/godis/lib/logger"
 )
 
 // FakeConn implements redis.Connection for test
@@ -38,7 +38,7 @@ func (c *FakeConn) notify() {
 	if c.waitOn != nil {
 		c.mu.Lock()
 		if c.waitOn != nil {
-			logger.Debug(fmt.Sprintf("notify %p", c.waitOn))
+			logger.Debugf("notify %p", c.waitOn)
 			close(c.waitOn)
 			c.waitOn = nil
 		}
@@ -55,10 +55,10 @@ func (c *FakeConn) wait(offset int) {
 		c.waitOn = make(chan struct{})
 	}
 	waitOn := c.waitOn
-	logger.Debug(fmt.Sprintf("wait on %p", waitOn))
+	logger.Debugf("wait on %p", waitOn)
 	c.mu.Unlock()
 	<-waitOn
-	logger.Debug(fmt.Sprintf("wait on %p finish", waitOn))
+	logger.Debugf("wait on %p finish", waitOn)
 }
 
 // Read reads data from buffer

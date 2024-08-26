@@ -7,13 +7,14 @@ package tcp
 import (
 	"bufio"
 	"context"
-	"github.com/hdt3213/godis/lib/logger"
-	"github.com/hdt3213/godis/lib/sync/atomic"
-	"github.com/hdt3213/godis/lib/sync/wait"
 	"io"
 	"net"
 	"sync"
 	"time"
+
+	"github.com/darkit/godis/lib/logger"
+	"github.com/darkit/godis/lib/sync/atomic"
+	"github.com/darkit/godis/lib/sync/wait"
 )
 
 // EchoHandler echos received line to client, using for test
@@ -62,13 +63,13 @@ func (h *EchoHandler) Handle(ctx context.Context, conn net.Conn) {
 				logger.Info("connection close")
 				h.activeConn.Delete(client)
 			} else {
-				logger.Warn(err)
+				logger.Warn(err.Error())
 			}
 			return
 		}
 		client.Waiting.Add(1)
-		//logger.Info("sleeping")
-		//time.Sleep(10 * time.Second)
+		// logger.Info("sleeping")
+		// time.Sleep(10 * time.Second)
 		b := []byte(msg)
 		_, _ = conn.Write(b)
 		client.Waiting.Done()

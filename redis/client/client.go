@@ -2,17 +2,18 @@ package client
 
 import (
 	"errors"
-	"github.com/hdt3213/godis/interface/redis"
-	"github.com/hdt3213/godis/lib/logger"
-	"github.com/hdt3213/godis/lib/sync/wait"
-	"github.com/hdt3213/godis/redis/parser"
-	"github.com/hdt3213/godis/redis/protocol"
 	"net"
 	"runtime/debug"
 	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
+
+	"github.com/darkit/godis/interface/redis"
+	"github.com/darkit/godis/lib/logger"
+	"github.com/darkit/godis/lib/sync/wait"
+	"github.com/darkit/godis/redis/parser"
+	"github.com/darkit/godis/redis/protocol"
 )
 
 const (
@@ -195,7 +196,6 @@ func (client *Client) finishRequest(reply redis.Reply) {
 	defer func() {
 		if err := recover(); err != nil {
 			debug.PrintStack()
-			logger.Error(err)
 		}
 	}()
 	request := <-client.waitingReqs

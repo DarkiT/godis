@@ -6,13 +6,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/hdt3213/godis/config"
-	"github.com/hdt3213/godis/datastruct/lock"
-	"github.com/hdt3213/godis/interface/redis"
-	"github.com/hdt3213/godis/lib/logger"
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/connection"
-	"github.com/hdt3213/godis/redis/protocol"
 	"math/rand"
 	"os"
 	"sort"
@@ -20,6 +13,14 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/darkit/godis/config"
+	"github.com/darkit/godis/datastruct/lock"
+	"github.com/darkit/godis/interface/redis"
+	"github.com/darkit/godis/lib/logger"
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/connection"
+	"github.com/darkit/godis/redis/protocol"
 )
 
 const slotCount int = 16384
@@ -265,7 +266,7 @@ func (raft *Raft) start(state raftState) {
 	raft.state = state
 	raft.heartbeatChan = make(chan *heartbeat, 1)
 	raft.electionAlarm = nextElectionAlarm()
-	//raft.nodeIndexMap = make(map[string]*nodeStatus)
+	// raft.nodeIndexMap = make(map[string]*nodeStatus)
 	go func() {
 		for {
 			if raft.closed {
@@ -369,18 +370,18 @@ func (raft *Raft) candidateJob() {
 			defer wg.Done()
 			rawResp := raft.cluster.relay(nodeID, conn, args)
 			if err, ok := rawResp.(protocol.ErrorReply); ok {
-				logger.Info(fmt.Sprintf("cannot get vote response from %s, %v", nodeID, err))
+				logger.Infof("cannot get vote response from %s, %v", nodeID, err)
 				return
 			}
 			respBody, ok := rawResp.(*protocol.MultiBulkReply)
 			if !ok {
-				logger.Info(fmt.Sprintf("cannot get vote response from %s, not a multi bulk reply", nodeID))
+				logger.Infof("cannot get vote response from %s, not a multi bulk reply", nodeID)
 				return
 			}
 			resp := &voteResp{}
 			err := resp.unmarshal(respBody.Args)
 			if err != nil {
-				logger.Info(fmt.Sprintf("cannot get vote response from %s, %v", nodeID, err))
+				logger.Infof("cannot get vote response from %s, %v", nodeID, err)
 				return
 			}
 
@@ -394,7 +395,7 @@ func (raft *Raft) candidateJob() {
 				return
 			}
 			if resp.term > raft.term {
-				logger.Infof(fmt.Sprintf("vote response from %s has newer term %d", nodeID, resp.term))
+				logger.Infof("vote response from %s has newer term %d", nodeID, resp.term)
 				raft.term = resp.term
 				raft.state = follower
 				raft.votedFor = ""
@@ -403,7 +404,7 @@ func (raft *Raft) candidateJob() {
 			}
 
 			if resp.voteFor == raft.selfNodeID {
-				logger.Infof(fmt.Sprintf("get vote from %s", nodeID))
+				logger.Infof("get vote from %s", nodeID)
 				raft.voteCount++
 				if raft.voteCount >= len(raft.nodes)/2+1 {
 					logger.Info("elected to be the leader")
@@ -826,8 +827,10 @@ func (req *heartbeatRequest) unmarshal(args [][]byte) protocol.ErrorReply {
 	return nil
 }
 
-const prevLogMismatch = "prev log mismatch"
-const nodeNotReady = "not ready"
+const (
+	prevLogMismatch = "prev log mismatch"
+	nodeNotReady    = "not ready"
+)
 
 // execRaftHeartbeat receives heartbeat from leader
 // command line: raft heartbeat nodeID term commitTo prevTerm prevIndex [log entry]
@@ -926,7 +929,7 @@ func execRaftGetOffset(cluster *Cluster, c redis.Connection, args [][]byte) redi
 	raft := cluster.asRaft()
 	raft.mu.RLock()
 	proposalIndex := raft.proposedIndex
-	//committedIndex := raft.committedIndex
+	// committedIndex := raft.committedIndex
 	raft.mu.RUnlock()
 	return protocol.MakeIntReply(int64(proposalIndex))
 }

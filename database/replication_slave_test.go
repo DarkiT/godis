@@ -2,18 +2,19 @@ package database
 
 import (
 	"bytes"
-	"github.com/hdt3213/godis/aof"
-	"github.com/hdt3213/godis/config"
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/client"
-	"github.com/hdt3213/godis/redis/connection"
-	"github.com/hdt3213/godis/redis/protocol"
-	"github.com/hdt3213/godis/redis/protocol/asserts"
 	"io/ioutil"
 	"os"
 	"path"
 	"testing"
 	"time"
+
+	"github.com/darkit/godis/aof"
+	"github.com/darkit/godis/config"
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/client"
+	"github.com/darkit/godis/redis/connection"
+	"github.com/darkit/godis/redis/protocol"
+	"github.com/darkit/godis/redis/protocol/asserts"
 )
 
 func TestReplicationSlaveSide(t *testing.T) {

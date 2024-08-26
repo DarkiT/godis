@@ -2,10 +2,11 @@ package cluster
 
 import (
 	"fmt"
-	"github.com/hdt3213/godis/interface/redis"
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/protocol"
 	"strconv"
+
+	"github.com/darkit/godis/interface/redis"
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/protocol"
 )
 
 const keyExistsErr = "key exists"
@@ -63,7 +64,7 @@ func MSet(cluster *Cluster, c redis.Connection, cmdLine CmdLine) redis.Reply {
 		}
 	}
 
-	//prepare
+	// prepare
 	var errReply redis.Reply
 	txID := cluster.idGenerator.NextID()
 	txIDStr := strconv.FormatInt(txID, 10)
@@ -91,7 +92,6 @@ func MSet(cluster *Cluster, c redis.Connection, cmdLine CmdLine) redis.Reply {
 		return &protocol.OkReply{}
 	}
 	return errReply
-
 }
 
 // MSetNX sets multi key-value in database, only if none of the given writeKeys exist and all given writeKeys are on the same node

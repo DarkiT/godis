@@ -222,7 +222,7 @@ func (skiplist *skiplist) getByRank(rank int64) *node {
 }
 
 func (skiplist *skiplist) hasInRange(min Border, max Border) bool {
-	if min.isIntersected(max) { //是有交集的，则返回false
+	if min.isIntersected(max) { // 是有交集的，则返回false
 		return false
 	}
 

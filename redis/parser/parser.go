@@ -9,9 +9,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/hdt3213/godis/interface/redis"
-	"github.com/hdt3213/godis/lib/logger"
-	"github.com/hdt3213/godis/redis/protocol"
+	"github.com/darkit/godis/interface/redis"
+	"github.com/darkit/godis/lib/logger"
+	"github.com/darkit/godis/redis/protocol"
 )
 
 // Payload stores redis.Reply or error
@@ -63,7 +63,7 @@ func ParseOne(data []byte) (redis.Reply, error) {
 func parse0(rawReader io.Reader, ch chan<- *Payload) {
 	defer func() {
 		if err := recover(); err != nil {
-			logger.Error(err, string(debug.Stack()))
+			logger.Error("recover", "stack", string(debug.Stack()))
 		}
 	}()
 	reader := bufio.NewReader(rawReader)
@@ -77,7 +77,7 @@ func parse0(rawReader io.Reader, ch chan<- *Payload) {
 		length := len(line)
 		if length <= 2 || line[length-2] != '\r' {
 			// there are some empty lines within replication traffic, ignore this error
-			//protocolError(ch, "empty line")
+			// protocolError(ch, "empty line")
 			continue
 		}
 		line = bytes.TrimSuffix(line, []byte{'\r', '\n'})
@@ -173,7 +173,7 @@ func parseRDBBulkString(reader *bufio.Reader, ch chan<- *Payload) error {
 		return err
 	}
 	ch <- &Payload{
-		Data: protocol.MakeBulkReply(body[:len(body)]),
+		Data: protocol.MakeBulkReply(body[:]),
 	}
 	return nil
 }

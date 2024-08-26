@@ -8,15 +8,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hdt3213/godis/aof"
+	"github.com/darkit/godis/aof"
 
-	"github.com/hdt3213/godis/config"
-	"github.com/hdt3213/godis/interface/database"
-	"github.com/hdt3213/godis/interface/redis"
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/connection"
-	"github.com/hdt3213/godis/redis/protocol"
-	"github.com/hdt3213/godis/redis/protocol/asserts"
+	"github.com/darkit/godis/config"
+	"github.com/darkit/godis/interface/database"
+	"github.com/darkit/godis/interface/redis"
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/connection"
+	"github.com/darkit/godis/redis/protocol"
+	"github.com/darkit/godis/redis/protocol/asserts"
 )
 
 func makeTestData(db database.DB, dbIndex int, prefix string, size int) {
@@ -195,7 +195,7 @@ func TestRewriteAOF(t *testing.T) {
 		prefixes = append(prefixes, prefix)
 		makeTestData(aofWriteDB, i, prefix, size)
 	}
-	//time.Sleep(2 * time.Second)
+	// time.Sleep(2 * time.Second)
 	aofWriteDB.Exec(nil, utils.ToCmdLine("rewriteaof"))
 	time.Sleep(2 * time.Second)        // wait for async goroutine finish its job
 	aofWriteDB.Close()                 // wait for aof finished

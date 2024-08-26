@@ -10,9 +10,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hdt3213/godis/lib/utils"
+	"github.com/darkit/godis/lib/utils"
 
-	"github.com/hdt3213/godis/lib/logger"
+	"github.com/darkit/godis/lib/logger"
 )
 
 var (
@@ -63,8 +63,10 @@ func (p *ServerProperties) AnnounceAddress() string {
 }
 
 // Properties holds global config properties
-var Properties *ServerProperties
-var EachTimeServerInfo *ServerInfo
+var (
+	Properties         *ServerProperties
+	EachTimeServerInfo *ServerInfo
+)
 
 func init() {
 	// A few stats we don't want to reset: server startup time, and peak mem.
@@ -100,7 +102,7 @@ func parse(src io.Reader) *ServerProperties {
 		}
 	}
 	if err := scanner.Err(); err != nil {
-		logger.Fatal(err)
+		logger.Fatal(err.Error())
 	}
 
 	// parse format

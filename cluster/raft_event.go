@@ -4,11 +4,12 @@ package cluster
 
 import (
 	"errors"
-	"github.com/hdt3213/godis/interface/redis"
-	"github.com/hdt3213/godis/lib/logger"
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/connection"
-	"github.com/hdt3213/godis/redis/protocol"
+
+	"github.com/darkit/godis/interface/redis"
+	"github.com/darkit/godis/lib/logger"
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/connection"
+	"github.com/darkit/godis/redis/protocol"
 )
 
 const (
@@ -54,7 +55,6 @@ func (raft *Raft) applyLogEntries(entries []*logEntry) {
 	if err := raft.persist(); err != nil {
 		logger.Errorf("persist raft error: %v", err)
 	}
-
 }
 
 // NewNode creates a new Node when a node request self node for joining cluster

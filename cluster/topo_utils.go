@@ -1,9 +1,9 @@
 package cluster
 
 import (
-	"github.com/hdt3213/godis/datastruct/set"
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/connection"
+	"github.com/darkit/godis/datastruct/set"
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/connection"
 )
 
 func (cluster *Cluster) isImportedKey(key string) bool {

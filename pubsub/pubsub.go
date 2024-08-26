@@ -1,11 +1,12 @@
 package pubsub
 
 import (
-	"github.com/hdt3213/godis/datastruct/list"
-	"github.com/hdt3213/godis/interface/redis"
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/protocol"
 	"strconv"
+
+	"github.com/darkit/godis/datastruct/list"
+	"github.com/darkit/godis/interface/redis"
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/protocol"
 )
 
 var (
@@ -98,7 +99,6 @@ func UnsubscribeAll(hub *Hub, c redis.Connection) {
 	for _, channel := range channels {
 		unsubscribe0(hub, channel, c)
 	}
-
 }
 
 // UnSubscribe removes the given connection from the given channel

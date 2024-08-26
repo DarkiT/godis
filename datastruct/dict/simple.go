@@ -1,7 +1,7 @@
 package dict
 
 import (
-	"github.com/hdt3213/godis/lib/wildcard"
+	"github.com/darkit/godis/lib/wildcard"
 )
 
 // SimpleDict wraps a map, it is not thread safe

@@ -5,10 +5,10 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/hdt3213/godis/config"
-	"github.com/hdt3213/godis/lib/logger"
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/protocol"
+	"github.com/darkit/godis/config"
+	"github.com/darkit/godis/lib/logger"
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/protocol"
 )
 
 func (persister *Persister) newRewriteHandler() *Persister {
@@ -129,10 +129,10 @@ func (persister *Persister) FinishRewrite(ctx *RewriteCtx) {
 	// replace current aof file by tmp file
 	_ = persister.aofFile.Close()
 	if err := os.Rename(tmpFile.Name(), persister.aofFilename); err != nil {
-		logger.Warn(err)
+		logger.Warn(err.Error())
 	}
 	// reopen aof file for further write
-	aofFile, err := os.OpenFile(persister.aofFilename, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0600)
+	aofFile, err := os.OpenFile(persister.aofFilename, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0o600)
 	if err != nil {
 		panic(err)
 	}

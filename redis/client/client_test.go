@@ -2,22 +2,16 @@ package client
 
 import (
 	"bytes"
-	"github.com/hdt3213/godis/lib/logger"
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/protocol"
-	"github.com/hdt3213/godis/redis/protocol/asserts"
 	"strconv"
 	"testing"
 	"time"
+
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/protocol"
+	"github.com/darkit/godis/redis/protocol/asserts"
 )
 
 func TestClient(t *testing.T) {
-	logger.Setup(&logger.Settings{
-		Path:       "logs",
-		Name:       "godis",
-		Ext:        ".log",
-		TimeFormat: "2006-01-02",
-	})
 	client, err := MakeClient("localhost:6379")
 	if err != nil {
 		t.Error(err)
@@ -112,12 +106,6 @@ func TestClient(t *testing.T) {
 }
 
 func TestReconnect(t *testing.T) {
-	logger.Setup(&logger.Settings{
-		Path:       "logs",
-		Name:       "godis",
-		Ext:        ".log",
-		TimeFormat: "2006-01-02",
-	})
 	client, err := MakeClient("localhost:6379")
 	if err != nil {
 		t.Error(err)

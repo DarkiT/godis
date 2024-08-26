@@ -1,10 +1,11 @@
 package list
 
 import (
-	"github.com/hdt3213/godis/lib/utils"
 	"strconv"
 	"strings"
 	"testing"
+
+	"github.com/darkit/godis/lib/utils"
 )
 
 func ToString(list *LinkedList) string {
@@ -166,7 +167,6 @@ func TestRemoveVal(t *testing.T) {
 	if list.Len() != 0 {
 		t.Error("test fail: expected 0, actual: " + strconv.Itoa(list.Len()))
 	}
-
 }
 
 func TestInsert(t *testing.T) {

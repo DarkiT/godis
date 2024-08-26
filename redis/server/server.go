@@ -11,20 +11,18 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/hdt3213/godis/cluster"
-	"github.com/hdt3213/godis/config"
-	database2 "github.com/hdt3213/godis/database"
-	"github.com/hdt3213/godis/interface/database"
-	"github.com/hdt3213/godis/lib/logger"
-	"github.com/hdt3213/godis/lib/sync/atomic"
-	"github.com/hdt3213/godis/redis/connection"
-	"github.com/hdt3213/godis/redis/parser"
-	"github.com/hdt3213/godis/redis/protocol"
+	"github.com/darkit/godis/cluster"
+	"github.com/darkit/godis/config"
+	database2 "github.com/darkit/godis/database"
+	"github.com/darkit/godis/interface/database"
+	"github.com/darkit/godis/lib/logger"
+	"github.com/darkit/godis/lib/sync/atomic"
+	"github.com/darkit/godis/redis/connection"
+	"github.com/darkit/godis/redis/parser"
+	"github.com/darkit/godis/redis/protocol"
 )
 
-var (
-	unknownErrReplyBytes = []byte("-ERR unknown\r\n")
-)
+var unknownErrReplyBytes = []byte("-ERR unknown\r\n")
 
 // Handler implements tcp.Handler and serves as a redis server
 type Handler struct {

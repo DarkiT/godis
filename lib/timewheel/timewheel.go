@@ -2,7 +2,6 @@ package timewheel
 
 import (
 	"container/list"
-	"github.com/hdt3213/godis/lib/logger"
 	"time"
 )
 
@@ -123,9 +122,7 @@ func (tw *TimeWheel) scanAndRunTask(l *list.List) {
 
 		go func() {
 			defer func() {
-				if err := recover(); err != nil {
-					logger.Error(err)
-				}
+				_ = recover()
 			}()
 			job := task.job
 			job()

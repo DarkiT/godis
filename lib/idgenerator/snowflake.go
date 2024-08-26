@@ -32,7 +32,7 @@ func MakeGenerator(node string) *IDGenerator {
 	_, _ = fnv64.Write([]byte(node))
 	nodeID := int64(fnv64.Sum64()) & nodeMask
 
-	var curTime = time.Now()
+	curTime := time.Now()
 	epoch := curTime.Add(time.Unix(epoch0/1000, (epoch0%1000)*1000000).Sub(curTime))
 
 	return &IDGenerator{
@@ -65,6 +65,6 @@ func (w *IDGenerator) NextID() int64 {
 	}
 	w.lastStamp = timestamp
 	id := (timestamp << timeLeft) | (w.nodeID << nodeLeft) | w.sequence
-	//fmt.Printf("%d %d %d\n", timestamp, w.sequence, id)
+	// fmt.Printf("%d %d %d\n", timestamp, w.sequence, id)
 	return id
 }

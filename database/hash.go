@@ -1,13 +1,14 @@
 package database
 
 import (
-	Dict "github.com/hdt3213/godis/datastruct/dict"
-	"github.com/hdt3213/godis/interface/database"
-	"github.com/hdt3213/godis/interface/redis"
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/protocol"
 	"strconv"
 	"strings"
+
+	Dict "github.com/darkit/godis/datastruct/dict"
+	"github.com/darkit/godis/interface/database"
+	"github.com/darkit/godis/interface/redis"
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/protocol"
 )
 
 func (db *DB) getAsDict(key string) (Dict.Dict, protocol.ErrorReply) {
@@ -77,7 +78,6 @@ func execHSetNX(db *DB, args [][]byte) redis.Reply {
 	result := dict.PutIfAbsent(field, value)
 	if result > 0 {
 		db.addAof(utils.ToCmdLine3("hsetnx", args...))
-
 	}
 	return protocol.MakeIntReply(int64(result))
 }

@@ -2,17 +2,18 @@ package cluster
 
 import (
 	"errors"
-	"github.com/hdt3213/godis/config"
-	database2 "github.com/hdt3213/godis/database"
-	"github.com/hdt3213/godis/datastruct/dict"
-	"github.com/hdt3213/godis/interface/redis"
-	"github.com/hdt3213/godis/lib/idgenerator"
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/connection"
-	"github.com/hdt3213/godis/redis/parser"
-	"github.com/hdt3213/godis/redis/protocol"
 	"math/rand"
 	"sync"
+
+	"github.com/darkit/godis/config"
+	database2 "github.com/darkit/godis/database"
+	"github.com/darkit/godis/datastruct/dict"
+	"github.com/darkit/godis/interface/redis"
+	"github.com/darkit/godis/lib/idgenerator"
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/connection"
+	"github.com/darkit/godis/redis/parser"
+	"github.com/darkit/godis/redis/protocol"
 )
 
 type testClientFactory struct {
@@ -136,9 +137,11 @@ func mockClusterNodes(addresses []string, timeoutFlags []bool) []*Cluster {
 	return nodes
 }
 
-var addresses = []string{"127.0.0.1:6399", "127.0.0.1:7379"}
-var timeoutFlags = []bool{false, false}
-var testCluster = mockClusterNodes(addresses, timeoutFlags)
+var (
+	addresses    = []string{"127.0.0.1:6399", "127.0.0.1:7379"}
+	timeoutFlags = []bool{false, false}
+	testCluster  = mockClusterNodes(addresses, timeoutFlags)
+)
 
 func toArgs(cmd ...string) [][]byte {
 	args := make([][]byte, len(cmd))

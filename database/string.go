@@ -6,12 +6,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hdt3213/godis/aof"
-	"github.com/hdt3213/godis/datastruct/bitmap"
-	"github.com/hdt3213/godis/interface/database"
-	"github.com/hdt3213/godis/interface/redis"
-	"github.com/hdt3213/godis/lib/utils"
-	"github.com/hdt3213/godis/redis/protocol"
+	"github.com/darkit/godis/aof"
+	"github.com/darkit/godis/datastruct/bitmap"
+	"github.com/darkit/godis/interface/database"
+	"github.com/darkit/godis/interface/redis"
+	"github.com/darkit/godis/lib/utils"
+	"github.com/darkit/godis/redis/protocol"
 )
 
 func (db *DB) getAsString(key string) ([]byte, protocol.ErrorReply) {
@@ -814,7 +814,7 @@ func execBitPos(db *DB, args [][]byte) redis.Reply {
 		beg *= 8
 		end *= 8
 	}
-	var offset = int64(-1)
+	offset := int64(-1)
 	bm.ForEachBit(int64(beg), int64(end), func(o int64, val byte) bool {
 		if val == v {
 			offset = o

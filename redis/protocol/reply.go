@@ -2,15 +2,13 @@ package protocol
 
 import (
 	"bytes"
-	"github.com/hdt3213/godis/interface/redis"
 	"strconv"
+
+	"github.com/darkit/godis/interface/redis"
 )
 
-var (
-
-	// CRLF is the line separator of redis serialization protocol
-	CRLF = "\r\n"
-)
+// CRLF is the line separator of redis serialization protocol
+var CRLF = "\r\n"
 
 /* ---- Bulk Reply ---- */
 
@@ -51,7 +49,7 @@ func MakeMultiBulkReply(args [][]byte) *MultiBulkReply {
 // ToBytes marshal redis.Reply
 func (r *MultiBulkReply) ToBytes() []byte {
 	var buf bytes.Buffer
-	//Calculate the length of buffer
+	// Calculate the length of buffer
 	argLen := len(r.Args)
 	bufLen := 1 + len(strconv.Itoa(argLen)) + 2
 	for _, arg := range r.Args {
@@ -61,9 +59,9 @@ func (r *MultiBulkReply) ToBytes() []byte {
 			bufLen += 1 + len(strconv.Itoa(len(arg))) + 2 + len(arg) + 2
 		}
 	}
-	//Allocate memory
+	// Allocate memory
 	buf.Grow(bufLen)
-	//Write string step by step,avoid concat strings
+	// Write string step by step,avoid concat strings
 	buf.WriteString("*")
 	buf.WriteString(strconv.Itoa(argLen))
 	buf.WriteString(CRLF)
@@ -75,7 +73,7 @@ func (r *MultiBulkReply) ToBytes() []byte {
 			buf.WriteString("$")
 			buf.WriteString(strconv.Itoa(len(arg)))
 			buf.WriteString(CRLF)
-			//Write bytes,avoid slice of byte to string(slicebytetostring)
+			// Write bytes,avoid slice of byte to string(slicebytetostring)
 			buf.Write(arg)
 			buf.WriteString(CRLF)
 		}

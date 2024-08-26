@@ -1,13 +1,13 @@
 package cluster
 
 import (
-	"fmt"
-	"github.com/hdt3213/godis/aof"
-	"github.com/hdt3213/godis/interface/redis"
-	"github.com/hdt3213/godis/lib/logger"
-	"github.com/hdt3213/godis/redis/protocol"
 	"strconv"
 	"strings"
+
+	"github.com/darkit/godis/aof"
+	"github.com/darkit/godis/interface/redis"
+	"github.com/darkit/godis/lib/logger"
+	"github.com/darkit/godis/redis/protocol"
 )
 
 func init() {
@@ -60,7 +60,7 @@ func execGClusterSetSlot(cluster *Cluster, c redis.Connection, args [][]byte) re
 		return protocol.MakeErrReply("ERR node not found")
 	}
 	cluster.setSlotMovingOut(slotId, targetNodeID)
-	logger.Info(fmt.Sprintf("set slot %d to node %s", slotId, targetNodeID))
+	logger.Infof("set slot %d to node %s", slotId, targetNodeID)
 	return protocol.MakeOkReply()
 }
 
